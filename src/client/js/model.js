@@ -92,9 +92,9 @@ function hand() {
         initialScore += self.getValue(this.cards[cardIndex], initialScore);
       }
     }
-    for (var card in self.cards) {
-      if (card.indexOf("A") != -1) {
-        initialScore += self.getValue(card, initialScore);
+    for (var cardIndex in self.cards) {
+      if (this.cards[cardIndex].indexOf("A") != -1) {
+        initialScore += self.getValue(this.cards[cardIndex], initialScore);
       }
     }
     return initialScore;
@@ -109,7 +109,7 @@ function hand() {
     if (!isNaN(numericValue)) {
       return numericValue;
     }
-    else if (numericValue == "A") {
+    else if (cardValue == "A") {
       return (score > 10) ? 1 : 11;
     }
     else {
