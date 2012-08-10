@@ -1,7 +1,7 @@
 function game () {
   var self = this;
 
-  this.currentRound = {};
+  this.currentRound = ko.observable();
   this.deck = [];
   this.currentCard = 0;
 
@@ -11,7 +11,7 @@ function game () {
 
   // Clear current round and create a new deck
   this.shuffle = function() {
-    self.currentRound = null;
+    self.currentRound(null);
 
     var safety = 0;
 
@@ -33,7 +33,7 @@ function game () {
 
   // Create the current round
   this.deal = function() {
-    self.currentRound = new round(self);
+    self.currentRound(new round(self));
   };
 
   this.nextCard = function() {
@@ -62,7 +62,6 @@ function round(currentGameObj) {
 
   this.player = new hand();
   this.dealer = new hand();
-
   this.players = [this.player, this.dealer];
 
   this.currentPlayer = {};
