@@ -60,8 +60,8 @@ function round(currentGameObj) {
   var self = this;
   this.currentGame = currentGameObj;
 
-  this.player = new hand();
-  this.dealer = new hand();
+  this.player = ko.observable(new hand());
+  this.dealer = ko.observable(new hand());
   this.players = [this.player, this.dealer];
 
   this.currentPlayer = {};
@@ -71,29 +71,29 @@ function round(currentGameObj) {
   };
 
   this.stand = function() {
-    self.currentPlayer = self.players[self.players.indexOf(self.currentPlayer)++];
+    self.currentPlayer = self.players[self.players.indexOf(self.currentPlayer)++]();
   };
 
   for (var i = 0; i < this.players.length * 2; i++) {
-    this.players[i % 2].addCard(self.currentGame.nextCard());
+    this.players[i % 2]().addCard(self.currentGame.nextCard());
   }
 
-  this.currentPlayer = this.players[0];
+  this.currentPlayer = this.players[0]();
 }
 
 function hand() {
   var self = this;
-  this.cards = [];
+  this.cards = ko.observableArray();
   this.score = function() {
     var initialScore = 0;
-    for (var cardIndex in self.cards) {
-      if (this.cards[cardIndex].indexOf("A") == -1) {
-        initialScore += self.getValue(this.cards[cardIndex], initialScore);
+    for (var cardIndex in self.cards()) {
+      if (this.cards()[cardIndex].indexOf("A") == -1) {
+        initialScore += self.getValue(this.cards()[cardIndex], initialScore);
       }
     }
-    for (var cardIndex in self.cards) {
-      if (this.cards[cardIndex].indexOf("A") != -1) {
-        initialScore += self.getValue(this.cards[cardIndex], initialScore);
+    for (var cardIndex in self.cards()) {
+      if (this.cards()[cardIndex].indexOf("A") != -1) {
+        initialScore += self.getValue(this.cards()[cardIndex], initialScore);
       }
     }
     return initialScore;
