@@ -67,7 +67,7 @@ function round(currentGameObj) {
   this.currentPlayer = {};
   this.hit = function() {
     self.currentPlayer.addCard(self.currentGame.nextCard());
-    return !(self.currentPlayer.score() > 21);
+    return (self.currentPlayer.score() < 22);
   };
 
   this.stand = function() {
@@ -84,20 +84,20 @@ function round(currentGameObj) {
 function hand() {
   var self = this;
   this.cards = ko.observableArray();
-  this.score = function() {
+  this.score = ko.computed(function() {
     var initialScore = 0;
     for (var cardIndex in self.cards()) {
-      if (this.cards()[cardIndex].indexOf("A") == -1) {
-        initialScore += self.getValue(this.cards()[cardIndex], initialScore);
+      if (self.cards()[cardIndex].indexOf("A") == -1) {
+        initialScore += self.getValue(self.cards()[cardIndex], initialScore);
       }
     }
     for (var cardIndex in self.cards()) {
-      if (this.cards()[cardIndex].indexOf("A") != -1) {
-        initialScore += self.getValue(this.cards()[cardIndex], initialScore);
+      if (self.cards()[cardIndex].indexOf("A") != -1) {
+        initialScore += self.getValue(self.cards()[cardIndex], initialScore);
       }
     }
     return initialScore;
-  };
+  });
   this.addCard = function(card) {
     this.cards.push(card);
   };

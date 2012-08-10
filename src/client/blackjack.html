@@ -21,11 +21,13 @@
               <ul id="dealer" class="cards" data-bind="foreach: cards">
                 <li data-bind="attr: {id: $data}"></li>
               </ul>
+              <div data-bind="text: score"></div>
             </div>
             <div data-bind="with: player">
               <ul id="player" class="cards" data-bind="foreach: cards">
                 <li data-bind="attr: {id: $data}"></li>
               </ul>
+              <div data-bind="text: score"></div>
             </div>
             
             <div class="btn-group">
