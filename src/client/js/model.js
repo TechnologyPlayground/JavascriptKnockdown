@@ -66,18 +66,54 @@ function round(currentGameObj) {
   this.players = [this.player, this.dealer];
 
   this.currentPlayer = {};
-  this.hit = function() {};
-  this.stand = function() {};
+  this.hit = function() {
+    self.currentPlayer.addCard(self.currentGame.nextCard());
+    return !(self.currentPlayer.score() > 21);
+  };
+
+  this.stand = function() {
+    self.currentPlayer = self.players[self.players.indexOf(self.currentPlayer)++];
+  };
 
   for (var i = 0; i < this.players.length * 2; i++) {
     this.players[i % 2].addCard(self.currentGame.nextCard());
   }
+
+  this.currentPlayer = this.players[0];
 }
 
 function hand() {
+  var self = this;
   this.cards = [];
-  this.score = {};
+  this.score = function() {
+    var initialScore = 0;
+    for (var cardIndex in self.cards) {
+      if (this.cards[cardIndex].indexOf("A") == -1) {
+        initialScore += self.getValue(this.cards[cardIndex], initialScore);
+      }
+    }
+    for (var card in self.cards) {
+      if (card.indexOf("A") != -1) {
+        initialScore += self.getValue(card, initialScore);
+      }
+    }
+    return initialScore;
+  };
   this.addCard = function(card) {
     this.cards.push(card);
+  };
+
+  this.getValue = function(card, score) {
+    var cardValue = card.substring(1);
+    var numericValue = parseInt(cardValue, 10);
+    if (!isNaN(numericValue)) {
+      return numericValue;
+    }
+    else if (numericValue == "A") {
+      return (score > 10) ? 1 : 11;
+    }
+    else {
+      return 10;
+    }
   };
 }
