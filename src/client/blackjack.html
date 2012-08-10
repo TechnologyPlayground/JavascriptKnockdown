@@ -18,16 +18,16 @@
           
           <div data-bind="with: currentRound">
             <div data-bind="with: dealer">
+              <h3>Dealer: <span data-bind="text: score"></span></h3>
               <ul id="dealer" class="cards" data-bind="foreach: cards">
                 <li data-bind="attr: {id: $data}"></li>
               </ul>
-              <div data-bind="text: score"></div>
             </div>
             <div data-bind="with: player">
+              <h3>Player: <span data-bind="text: score"></span></h3>
               <ul id="player" class="cards" data-bind="foreach: cards">
                 <li data-bind="attr: {id: $data}"></li>
               </ul>
-              <div data-bind="text: score"></div>
             </div>
             
             <div class="btn-group">
