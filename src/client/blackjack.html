@@ -17,12 +17,16 @@
           <button class="btn" data-bind="click: deal">Deal</button>
           
           <div data-bind="with: currentRound">
-            <ul id="dealer" class="cards" data-bind="foreach: dealer.cards">
-              <li data-bind="attr: {id: $data}"></li>
-            </ul>
-            <ul id="player" class="cards" data-bind="foreach: player.cards">
-              <li data-bind="attr: {id: $data}"></li>
-            </ul>
+            <div data-bind="with: dealer">
+              <ul id="dealer" class="cards" data-bind="foreach: cards">
+                <li data-bind="attr: {id: $data}"></li>
+              </ul>
+            </div>
+            <div data-bind="with: player">
+              <ul id="player" class="cards" data-bind="foreach: cards">
+                <li data-bind="attr: {id: $data}"></li>
+              </ul>
+            </div>
             
             <div class="btn-group">
               <button class="btn" data-bind="click: hit">Hit</button>
