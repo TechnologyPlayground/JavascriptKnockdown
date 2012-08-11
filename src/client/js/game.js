@@ -1,4 +1,4 @@
-function game () {
+function Game () {
   var self = this;
   var deck = new Deck();
 

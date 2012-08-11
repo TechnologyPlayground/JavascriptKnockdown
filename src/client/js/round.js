@@ -1,6 +1,6 @@
 function Round(currentGameObj) {
   var self = this;
-  this.currentGame = currentGameObj;
+  var currentGame = currentGameObj;
 
   this.player = ko.observable(new Hand());
   this.dealer = ko.observable(new Hand());
@@ -8,7 +8,7 @@ function Round(currentGameObj) {
 
   this.currentPlayer = {};
   this.hit = function() {
-    self.currentPlayer.addCard(self.currentGame.nextCard());
+    self.currentPlayer.addCard(currentGame.nextCard());
     return (self.currentPlayer.score() < 22);
   };
 
@@ -17,7 +17,7 @@ function Round(currentGameObj) {
   };
 
   for (var i = 0; i < this.players.length * 2; i++) {
-    this.players[i % 2]().addCard(self.currentGame.nextCard());
+    this.players[i % 2]().addCard(currentGame.nextCard());
   }
 
   this.currentPlayer = this.players[0]();
