@@ -1,34 +1,15 @@
 function game () {
   var self = this;
+  var deck = new Deck();
 
   this.currentRound = ko.observable();
-  this.deck = [];
+  this.cards = [];
   this.currentCard = 0;
 
-  this.suits = ["D", "C", "H", "S"];
-  this.numbers = ["J", "Q", "K", "A"];
-  this.deckOfCards = [];
-
-  // Clear current round and create a new deck
+  // Clear current round and create a new cards
   this.shuffle = function() {
     self.currentRound(null);
-
-    var safety = 0;
-
-    for (var i = 0; i < 52; i++) {
-      safety++;
-      var selectedCard = "";
-      do {
-        var randomCardIndex = Math.floor(Math.random() * 51);
-        var selectedCard = this.deckOfCards[randomCardIndex];
-        if (self.deck.indexOf(selectedCard) == -1) {
-          self.deck.push(selectedCard);
-        }
-        else {
-          selectedCard = null;
-        }
-      } while (selectedCard != null && safety < 10);
-    }
+    self.cards = deck.getShuffledCards();
   };
 
   // Create the current round
@@ -41,18 +22,9 @@ function game () {
       return null;
     }
 
-    return self.deck[self.currentCard++];
+    return self.cards[self.currentCard++];
   };
 
-  for (var i = 2; i < 11; i++) {
-    this.numbers.push(i);
-  }
-
-  for (var suitIndex = 0; suitIndex < 4; suitIndex++) {
-    for (var numberIndex = 0; numberIndex < 13; numberIndex++) {
-      self.deckOfCards.push(self.suits[suitIndex] + self.numbers[numberIndex]);
-    }
-  }
   this.shuffle();
 }
 
@@ -60,8 +32,8 @@ function round(currentGameObj) {
   var self = this;
   this.currentGame = currentGameObj;
 
-  this.player = ko.observable(new hand());
-  this.dealer = ko.observable(new hand());
+  this.player = ko.observable(new Hand());
+  this.dealer = ko.observable(new Hand());
   this.players = [this.player, this.dealer];
 
   this.currentPlayer = {};
@@ -81,38 +53,3 @@ function round(currentGameObj) {
   this.currentPlayer = this.players[0]();
 }
 
-function hand() {
-  var self = this;
-  this.cards = ko.observableArray();
-  this.score = ko.computed(function() {
-    var initialScore = 0;
-    for (var cardIndex in self.cards()) {
-      if (self.cards()[cardIndex].indexOf("A") == -1) {
-        initialScore += self.getValue(self.cards()[cardIndex], initialScore);
-      }
-    }
-    for (var cardIndex in self.cards()) {
-      if (self.cards()[cardIndex].indexOf("A") != -1) {
-        initialScore += self.getValue(self.cards()[cardIndex], initialScore);
-      }
-    }
-    return initialScore;
-  });
-  this.addCard = function(card) {
-    this.cards.push(card);
-  };
-
-  this.getValue = function(card, score) {
-    var cardValue = card.substring(1);
-    var numericValue = parseInt(cardValue, 10);
-    if (!isNaN(numericValue)) {
-      return numericValue;
-    }
-    else if (cardValue == "A") {
-      return (score > 10) ? 1 : 11;
-    }
-    else {
-      return 10;
-    }
-  };
-}

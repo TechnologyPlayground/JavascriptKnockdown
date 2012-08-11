@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.2.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.2.0/jasmine.css">
+  <script src="lib/jasmine-1.2.0/jasmine.js"></script>
+  <script src="lib/jasmine-1.2.0/jasmine-html.js"></script>
+  <script src="../../client/js/knockout-2.1.0.js"></script>
+
+  <!-- include source files here... -->
+  <script src="../../client/js/hand.js"></script>
+  <script src="../../client/js/deck.js"></script>
+
+  <!-- include spec files here... -->
+  <script src="spec/SpecHelper.js"></script>
+  <script src="spec/HandSpec.js"></script>
+  <script src="spec/DeckSpec.js"></script>
+
+  <script>
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>
