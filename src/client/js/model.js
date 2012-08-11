@@ -14,7 +14,7 @@ function game () {
 
   // Create the current round
   this.deal = function() {
-    self.currentRound(new round(self));
+    self.currentRound(new Round(self));
   };
 
   this.nextCard = function() {
@@ -27,29 +27,3 @@ function game () {
 
   this.shuffle();
 }
-
-function round(currentGameObj) {
-  var self = this;
-  this.currentGame = currentGameObj;
-
-  this.player = ko.observable(new Hand());
-  this.dealer = ko.observable(new Hand());
-  this.players = [this.player, this.dealer];
-
-  this.currentPlayer = {};
-  this.hit = function() {
-    self.currentPlayer.addCard(self.currentGame.nextCard());
-    return (self.currentPlayer.score() < 22);
-  };
-
-  this.stand = function() {
-    self.currentPlayer = self.players[self.players.indexOf(self.currentPlayer)++]();
-  };
-
-  for (var i = 0; i < this.players.length * 2; i++) {
-    this.players[i % 2]().addCard(self.currentGame.nextCard());
-  }
-
-  this.currentPlayer = this.players[0]();
-}
-
